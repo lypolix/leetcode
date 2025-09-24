@@ -11,27 +11,30 @@ func main() {
 	fmt.Println(removeDuplicateLetters(s))
 }
 func removeDuplicateLetters(s string) string {
-	res := ""
-
 	mapa := make([]int, 26)
-
-	for i := 0; i < 26; i ++ {
-		mapa[i] = 0
+	for i := 0; i < len(s); i ++ {
+		mapa[int(s[i] - 'a')] ++
 	}
 
-	for _, val := range s {
-		if mapa[int((val) - 'a')] != 0 {
+	in := make([]bool, 26)
+	res := make([]byte, 0, len(s))
+
+
+	for i := 0; i < len(s); i ++ {
+		mapa[int(s[i] - 'a')] --
+
+		if in[int(s[i] - 'a')]{
 			continue
-		} else {
-			mapa[int((val) - 'a')] = 1
 		}
+
+		for len(res) > 0 && res[len(res) - 1] > s[i] && mapa[int(res[len(res) - 1] - 'a')] > 0 {
+			in[int(res[len(res) - 1] - 'a')] = false
+			res = res[:len(res) - 1]
+		}
+
+		res = append(res, s[i])
+		in[int(s[i] - 'a')] = true 
 	}
 
-	for i := 0; i < 26; i ++ {
-		if mapa[i] == 1{
-			res += string(byte(int('a') + i))
-		}
-	}
-
-	return res
+	return string(res)
 }
