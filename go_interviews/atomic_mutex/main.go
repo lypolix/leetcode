@@ -9,6 +9,7 @@ type Mutex struct {
 
 
 func (m *Mutex) Lock() {
+	
 	for !atomic.CompareAndSwapInt32(&m.state, 0, 1) {
 
 	}
