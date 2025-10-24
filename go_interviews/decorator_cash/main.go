@@ -40,16 +40,14 @@ func NewCache(db KVDatabase) *Cache {
 
 func (c *Cache) startInvalidator() {
 	tt := time.NewTicker(invalidationTTL)
+	defer tt.Stop()
 
-	for {
-		select {
-		case <-tt.C:
-			c.mu.Lock()
-			c.data = make(map[string]string)
-			c.mu.Unlock()
-		}
+	for range tt.C {
+		c.mu.Lock()
+		c.data = make(map[string]string)
+		c.dataCreated = time.Now()
+		c.mu.Unlock()
 	}
-
 }
 
 func (c *Cache) Get(key string) (string, error) {
@@ -57,17 +55,18 @@ func (c *Cache) Get(key string) (string, error) {
 	v, ok := c.data[key]
 	c.mu.RUnlock()
 
-	if !ok {
-		v, err := c.db.Get(key)
-		if err != nil {
-			return "", err
-		}
-
-		c.mu.Lock()
-		c.data[key] = v
-		c.mu.Unlock()
-
+	if ok {
+		return v, nil
 	}
+
+	v, err := c.db.Get(key)
+	if err != nil {
+		return "", err
+	}
+
+	c.mu.Lock()
+	c.data[key] = v
+	c.mu.Unlock()
 
 	return v, nil
 

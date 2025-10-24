@@ -9,7 +9,7 @@ import (
 
 type Warehouse struct {
 	items map[string]int
-	mu sync.RWMutex
+	mu    sync.RWMutex
 }
 
 func NewWarehouse() *Warehouse {
@@ -26,17 +26,16 @@ func (w *Warehouse) ReserveItem(item string, qty int) bool {
 	w.mu.Lock()
 
 	defer w.mu.Unlock()
-	count, ok := w.items[item] 
+	count, ok := w.items[item]
 
 	if !ok {
 		return false
 	}
 
 	if count >= qty {
-		w.items[item] -= qty  
+		w.items[item] -= qty
 		return true
 	}
-
 
 	return false
 
@@ -79,17 +78,17 @@ func main() {
 
 	t := time.NewTicker(time.Second * 3)
 
-	loop: 
+loop:
 	for order := range orders {
 
 		select {
-		case <- t.C:
+		case <-t.C:
 			break loop
 		default:
 			workerpool <- struct{}{}
 			wg.Add(1)
 
-			go func() { 
+			go func() {
 				defer func() {
 					wg.Done()
 					<-workerpool
@@ -98,7 +97,7 @@ func main() {
 				ProcessOrders(warehouse, order)
 			}()
 		}
-		
+
 	}
 
 	wg.Wait()
