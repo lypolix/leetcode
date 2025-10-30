@@ -25,7 +25,7 @@ func main() {
 	fmt.Fscan(reader, &m)
 
 	g := make([][]int, n)
-	for i := 0; i < m; i ++ {
+	for i := 0; i < m; i ++ {																				
 		var a, b int
 		fmt.Fscan(reader, &a, &b)
 		a --
