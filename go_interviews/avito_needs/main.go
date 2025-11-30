@@ -20,7 +20,7 @@ func calcRes(goods []int, buyerNeeds[] int) int {
 		}
 	}
 
-	return res
+	return res																														
 
 }
 
@@ -51,6 +51,6 @@ func binsearch(mass []int, need int) int{
 
 func main() {
 	goods := []int{1, 2, 5, 8, 9}
-	needs := []int{1, 2, 6, 8, 12}
+	needs := []int{1, 2, 6, 8, 12}															
 	fmt.Println(calcRes(goods, needs))
 }

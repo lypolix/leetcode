@@ -8,3 +8,22 @@ FROM (
     FROM Logs
 ) tmp
 WHERE num = prev_num AND prev_num = prev2_num 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

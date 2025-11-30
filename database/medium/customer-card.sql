@@ -1,7 +1,5 @@
 SElECT c.id, c.email, ci.title, ci.amount from customer as c left join cart_item as ci on c.id = ci.customer_id
 
-
-
 SELECT c.id, c.email, sum(ci.amount*ci.price) as total_cart
 from customer as c inner join cart_item as ci
 on ci.customer_id = c.id
